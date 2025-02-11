@@ -1,25 +1,30 @@
 <div class="container">
   <mat-card>
-    <mat-card-header>
+    <!-- <mat-card-header>
       <mat-card-title>
         <h1>Post Create Component</h1>
       </mat-card-title>
-    </mat-card-header>
+    </mat-card-header> -->
 
-    <mat-card-content>
+    <mat-form-field>
       <div class="wrapper">
-        <textarea
-          name=""
-          id=""
-          placeholder="Input here..."
-          [(ngModel)]="enteredValue"
-        ></textarea>
-
-        <button mat-raised-button color="warn" (click)="onAddPost()">
-          Save
-        </button>
+        <input
+          matInput
+          type="text"
+          placeholder="Title"
+          [(ngModel)]="enteredTitle"
+        />
       </div>
-    </mat-card-content>
-    <p>{{ newPost }}</p>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        rows="6"
+        matInput
+        [(ngModel)]="enteredContent"
+        [ngModelOptions]="{ standalone: true }"
+        placeholder="Content"
+      ></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="warn" (click)="onAddPost()">Save</button>
   </mat-card>
 </div>
