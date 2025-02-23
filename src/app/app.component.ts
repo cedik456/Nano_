@@ -11,10 +11,9 @@ interface Post {
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'angular-project';
-  storedPosts: Post[] = [];
-
-  onPostAdded(post: Post): void {
-    this.storedPosts.push(post);
-  }
+  // title = 'angular-project';
+  // storedPosts: Post[] = [];
+  // onPostAdded(post: Post): void {
+  //   this.storedPosts.push(post);
+  // }
 }
