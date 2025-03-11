@@ -1,11 +1,31 @@
 const express = require("express");
 
+// mongo db
+
+const mongoose = require("mongoose");
+
+// Models
+const Post = require("./models/post");
+
 const app = express();
 
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Connect db
+
+mongoose
+  .connect(
+    "mongodb+srv://Angular2:sQbMPNWUzgKdRHkU@angular2.xeox6.mongodb.net/?retryWrites=true&w=majority&appName=Angular2"
+  )
+  .then(() => {
+    console.log("Database Connected Successfully");
+  })
+  .catch(() => {
+    console.log("Error fetching database");
+  });
 
 app.get("/", (req, res) => {
   res.send("This is the homepage");
@@ -26,13 +46,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/posts", (req, res, next) => {
-  const post = req.body;
-  console.log(post);
+app.post("/api/posts", async (req, res, next) => {
+  const { title, content } = req.body;
 
-  res.status(201).json({
-    message: "Post added successfully",
-  });
+  try {
+    const post = await Post.create({ title, content });
+    await post.save();
+    res.status(200).json(post);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.use("/api/posts", (req, res, next) => {
