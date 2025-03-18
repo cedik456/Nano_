@@ -58,25 +58,23 @@ app.post("/api/posts", async (req, res, next) => {
   }
 });
 
-app.use("/api/posts", (req, res, next) => {
-  const posts = [
-    {
-      id: "asdasdasdas",
-      title: "first title",
-      content: "first content from server side",
-    },
-    {
-      id: "asdasdasdasdasdas",
-      title: "first asdadastitle",
-      content: "first csadasdaontent from server side",
-    },
-  ];
-
-  res.status(200).json({
-    message: "Post successfully fetched",
-    posts: posts,
+app.get("/api/posts", (req, res) => {
+  Post.find().then((documents) => {
+    res.status(200).json({
+      message: "Post successfully",
+      posts: documents,
+    });
   });
+
   //   next();
+});
+
+app.delete("/api/posts/:id", (req, res) => {
+  Post.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    console.log(req.params.id);
+    res.status(200).json({ message: "Post deleted" });
+  });
 });
 
 // app.use((req, res) => {
