@@ -1,6 +1,7 @@
 <div class="container">
   <mat-card>
-    <form action="" (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-spinner *ngIf = "Loading"></mat-spinner> 
+    <form action="" (submit)="onAddPost(postForm)" #postForm="ngForm" *ngIf = "!Loading">
       <mat-form-field>
         <div class="wrapper">
           <input
@@ -12,6 +13,7 @@
             required
             #title="ngModel"
             minlength="5"
+            [ngModel] = "post?.title"  
           />
           <mat-error *ngIf="title.invalid">Enter a title</mat-error>
         </div>
@@ -26,6 +28,7 @@
           required
           #content="ngModel"
           placeholder="Content"
+          [ngModel] = "post?.content"  
         ></textarea>
         <mat-error *ngIf="content.invalid">Enter a title</mat-error>
       </mat-form-field>

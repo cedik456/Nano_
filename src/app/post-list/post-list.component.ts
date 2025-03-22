@@ -13,14 +13,24 @@ export class PostListComponent implements OnInit, OnDestroy {
   private postsSub!: Subscription;
 
   constructor(public postsService: PostsService) {}
+
+  public Loading = false;
+
   ngOnInit() {
+    this.Loading = true;
     this.postsService.getPosts();
     this.postsSub = this.postsService
       .getPostUpdatedListener()
       .subscribe((posts: Post[]) => {
+        this.Loading = false;
         this.posts = posts;
       });
   }
+
+  onDelete(postId: string) {
+    this.postsService.deletePost(postId);
+  }
+
   ngOnDestroy() {
     this.postsSub.unsubscribe;
   }
