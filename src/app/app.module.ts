@@ -15,6 +15,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';  
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    MatProgressSpinnerModule,  
     BrowserAnimationsModule,
     MatButtonModule,
     MatToolbarModule,

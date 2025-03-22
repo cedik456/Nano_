@@ -30,3 +30,7 @@ mat-card-content {
 .wrapper {
   display: flex;
 }
+
+mat-spinner{  
+  margin: auto;  
+}  

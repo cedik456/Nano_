@@ -1,6 +1,7 @@
 <div class="container">
   <mat-card>
-    <form action="" (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-spinner *ngIf = "Loading"></mat-spinner> 
+    <form action="" (submit)="onAddPost(postForm)" #postForm="ngForm" *ngIf = "!Loading">
       <mat-form-field>
         <div class="wrapper">
           <input
