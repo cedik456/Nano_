@@ -3,21 +3,47 @@ const express = require("express");
 const Post = require("../models/post");
 
 const router = express.Router();
+const multer = require("multer");
 
+const MIME_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/jpg": "jpg",
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid Mime Type");
+    if (isValid) {
+      error = null;
+    }
+    cb(null, "backend/images");
+  },
+
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(" ").join("_");
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + ext);
+  },
+});
 
 // router.get("/", (req, res) => {
 //   res.send("This is the homepage");
 // });
 
-
-router.post("/", async (req, res, next) => {
+router.post("/", multer(storage).single("image"), async (req, res, next) => {
+  const url = req.protocol + "://" + req.get("host");
   const { title, content } = req.body;
-
+  const imagePath = url + "/images/" + req.file.filename;
   try {
-    const post = await Post.create({ title, content });
+    const post = await Post.create({ title, content, imagePath });
     res.status(200).json({
-      message: 'Post added successfully',
-      postId: post._id
+      message: "Post added successfully",
+      post: {
+        ...post._doc,
+        id: post._id,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -35,15 +61,15 @@ router.get("/", (req, res) => {
   //   next();
 });
 
-router.get("/:id",(req, res, next)=>{  
-  Post.findById(req.params.id).then(post =>{  
-      if(post){  
-        res.status(200).json(post);  
-      }else{  
-        res.status(484).json({message: 'Post not Found!'});  
-      }  
-    });  
-}); 
+router.get("/:id", (req, res, next) => {
+  Post.findById(req.params.id).then((post) => {
+    if (post) {
+      res.status(200).json(post);
+    } else {
+      res.status(484).json({ message: "Post not Found!" });
+    }
+  });
+});
 
 router.delete("/:id", (req, res) => {
   Post.deleteOne({ _id: req.params.id }).then((result) => {
@@ -72,6 +98,5 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ message: "Could not update post!" });
   }
 });
-
 
 module.exports = router;
