@@ -32,23 +32,27 @@ const storage = multer.diskStorage({
 //   res.send("This is the homepage");
 // });
 
-router.post("/", multer(storage).single("image"), async (req, res, next) => {
-  const url = req.protocol + "://" + req.get("host");
-  const { title, content } = req.body;
-  const imagePath = url + "/images/" + req.file.filename;
-  try {
-    const post = await Post.create({ title, content, imagePath });
-    res.status(200).json({
-      message: "Post added successfully",
-      post: {
-        ...post._doc,
-        id: post._id,
-      },
-    });
-  } catch (error) {
-    console.log(error);
+router.post(
+  "/",
+  multer({ storage: storage }).single("image"),
+  async (req, res, next) => {
+    const url = req.protocol + "://" + req.get("host");
+    const { title, content } = req.body;
+    const imagePath = url + "/images/" + req.file.filename;
+    try {
+      const post = await Post.create({ title, content, imagePath });
+      res.status(200).json({
+        message: "Post added successfully",
+        post: {
+          ...post._doc,
+          id: post._id,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 router.get("/", (req, res) => {
   Post.find().then((documents) => {

@@ -49,11 +49,12 @@ export class PostCreateComponent implements OnInit {
               id: postData._id,
               title: postData.title || '',
               content: postData.content || '',
-              imagePath: undefined,
+              imagePath: postData.imagePath || '',
             };
             this.form.setValue({
               title: this.post?.title || '',
               content: this.post?.content || '',
+              image: this.post?.imagePath || null,
             });
           });
         }
@@ -85,14 +86,34 @@ export class PostCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('Form values:', this.form.value);
     if (this.mode === 'create') {
-      this.postsService.addPost(this.form.value.title, this.form.value.content);
-    } else {
-      this.postsService.updatePost(
-        this.postId!,
+      console.log('Creating a new post...');
+      this.postsService.addPost(
         this.form.value.title,
-        this.form.value.content
+        this.form.value.content,
+        this.form.value.image
       );
+    } else {
+      console.log('Updating an existing post...');
+      let postData: Post | FormData;
+      if (typeof this.form.value.image === 'object') {
+        // If a new image is uploaded
+        postData = new FormData();
+        postData.append('id', this.postId!);
+        postData.append('title', this.form.value.title);
+        postData.append('content', this.form.value.content);
+        postData.append('image', this.form.value.image);
+      } else {
+        // If no new image is uploaded
+        postData = {
+          id: this.postId!,
+          title: this.form.value.title,
+          content: this.form.value.content,
+          imagePath: this.post?.imagePath,
+        };
+      }
+      this.postsService.updatePost(this.postId!, postData);
     }
     this.form.reset();
   }
