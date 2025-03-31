@@ -1,14 +1,19 @@
 import { AbstractControl } from '@angular/forms';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 
 export const mimetype = (
   control: AbstractControl
-): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> => {
+): Observable<{ [key: string]: any } | null> => {
+  // Check if the value is a string (e.g., existing imagePath)
+  if (typeof control.value === 'string') {
+    return of(null); // Return null if it's a string (no validation error)
+  }
+
   const file = control.value as File;
   const filereader = new FileReader();
 
-  const FRObs = new Observable<{ [key: string]: any }>(
-    (observer: Observer<{ [key: string]: any }>) => {
+  const FRObs = new Observable<{ [key: string]: any } | null>(
+    (observer: Observer<{ [key: string]: any } | null>) => {
       filereader.addEventListener('loadend', () => {
         const arr = new Uint8Array(filereader.result as ArrayBuffer).subarray(
           0,
@@ -37,7 +42,7 @@ export const mimetype = (
         }
 
         if (isValid) {
-          observer.next({}); // Emit an empty object for valid cases
+          observer.next(null); // Emit null for valid cases (no error)
         } else {
           observer.next({ invalidMimeType: true }); // Emit an error object for invalid cases
         }

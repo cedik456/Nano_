@@ -87,20 +87,33 @@ router.delete("/:id", (req, res) => {
 //   res.send("Hello from expressJs");
 // });
 
-router.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  const { title, content } = req.body;
+router.put(
+  "/:id",
+  multer({ storage: storage }).single("image"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
 
-  try {
-    const result = await Post.updateOne({ _id: id }, { title, content });
-    if (result.modifiedCount > 0) {
-      res.status(200).json({ message: "Update successful!" });
-    } else {
-      res.status(404).json({ message: "Post not found!" });
+    let imagePath = req.body.imagePath; // Default to the existing imagePath
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      imagePath = url + "/images/" + req.file.filename; // Update with the new image path
     }
-  } catch (error) {
-    res.status(500).json({ message: "Could not update post!" });
+
+    try {
+      const result = await Post.updateOne(
+        { _id: id },
+        { title, content, imagePath }
+      );
+      if (result.modifiedCount > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(404).json({ message: "Post not found!" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Could not update post!" });
+    }
   }
-});
+);
 
 module.exports = router;

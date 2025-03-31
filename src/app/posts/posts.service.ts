@@ -73,7 +73,26 @@ export class PostsService {
       });
   }
 
-  updatePost(id: string, postData: Post | FormData) {
+  updatePost(id: string, title: string, content: string, image: File | string) {
+    let postData: FormData | Post;
+
+    if (typeof image === 'object') {
+      // If the image is a File, create a FormData object
+      postData = new FormData();
+      postData.append('id', id);
+      postData.append('title', title);
+      postData.append('content', content);
+      postData.append('image', image); // Add the new image file
+    } else {
+      // If the image is a string (existing imagePath), use a Post object
+      postData = {
+        id: id,
+        title: title,
+        content: content,
+        imagePath: image, // Keep the existing imagePath
+      };
+    }
+
     this.http
       .put('http://localhost:3000/api/posts/' + id, postData)
       .subscribe((response) => {
@@ -82,18 +101,12 @@ export class PostsService {
 
         const post: Post = {
           id: id,
-          title:
-            postData instanceof FormData
-              ? (postData.get('title') as string)
-              : postData.title,
-          content:
-            postData instanceof FormData
-              ? (postData.get('content') as string)
-              : postData.content,
+          title: title,
+          content: content,
           imagePath:
-            postData instanceof FormData
-              ? this.posts[oldPostIndex].imagePath // Keep the existing imagePath
-              : postData.imagePath, // Use the new imagePath if provided
+            typeof image === 'string'
+              ? image
+              : this.posts[oldPostIndex].imagePath,
         };
 
         updatedPosts[oldPostIndex] = post;
