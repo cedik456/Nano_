@@ -1,17 +1,40 @@
 <div class="container">
   <mat-card>
-    <mat-spinner></mat-spinner>
-    <form>
-      <mat-form-field>
-        <div class="wrapper">
-          <input matInput type="email" placeholder="Email Id" name="title" />
-          <mat-error *ngIf="">Please enter a valid email Id</mat-error>
-        </div>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="password" matInput placeholder="Password" />
-        <mat-error *ngIf="">Please enter a valid password</mat-error>
-      </mat-form-field>
+    <mat-spinner [diameter]="40"></mat-spinner>
+    <form (submit)="onLogin(loginform)" #loginform="ngForm">
+      <div class="sub-container">
+        <mat-form-field>
+          <div class="wrapper">
+            <input
+              matInput
+              name="email"
+              ngModel
+              type="email"
+              placeholder="Email Id"
+              #emailInput="ngModel"
+              required
+              email
+            />
+          </div>
+          <mat-error *ngIf="emailInput.invalid"
+            >Please enter a valid email Id</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            type="password"
+            ngModel
+            name="password"
+            matInput
+            placeholder="Password"
+            #passwordInput="ngModel"
+            required
+          />
+          <mat-error *ngIf="passwordInput.invalid"
+            >Please enter a valid password</mat-error
+          >
+        </mat-form-field>
+      </div>
       <button mat-raised-button color="warn" type="submit">Login</button>
     </form>
   </mat-card>
