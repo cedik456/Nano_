@@ -2,13 +2,6 @@ form {
   display: flex;
   flex-direction: column;
 }
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 75vh;
-  background-color: #f0f0f0;
-}
 
 mat-card {
   display: flex;
@@ -17,8 +10,8 @@ mat-card {
   flex-direction: column;
   margin: auto;
   width: auto;
-  padding: 50px;
-  max-width: 800px;
+  padding: 28px;
+  max-width: auto;
   border-radius: 10px;
 }
 
@@ -46,4 +39,12 @@ input[type="file"] {
 
 .image-preview img {
   height: 100px;
+}
+
+.pickImage-btn {
+  margin-bottom: 10px;
+}
+
+mat-form-field {
+  background-color: white;
 }

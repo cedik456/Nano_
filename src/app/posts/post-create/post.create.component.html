@@ -19,7 +19,12 @@
         </div>
       </mat-form-field>
       <div>
-        <button mat-stroked-button type="button" (click)="filepicker.click()">
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="filepicker.click()"
+          class="pickImage-btn"
+        >
           Pick image
         </button>
         <input type="file" #filepicker (change)="PickedImage($event)" />
