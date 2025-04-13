@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { logincomponent } from './authentication/login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     PostCreateComponent,
     AppHeaderComponent,
     PostListComponent,
+    logincomponent,
   ],
   imports: [
     MatCardModule,
