@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthData } from './auth-data.model';
-import { response } from 'express';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private token!: string;
+
+  getToken() {
+    return this.token;
+  }
+
   constructor(private http: HttpClient) {}
   CreateUser(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
@@ -14,13 +19,17 @@ export class AuthService {
         console.log(response);
       });
   }
-
   loginUser(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
     this.http
-      .post('http://localhost:3000/api/user/login', authData)
+      .post<{ token: string; expiresIn: number }>(
+        'http://localhost:3000/api/user/login',
+        authData
+      )
       .subscribe((response) => {
-        console.log(response);
+        const token = response.token;
+        this.token = token;
+        console.log('Token received:', this.token);
       });
   }
 }
