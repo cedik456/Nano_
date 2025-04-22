@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private token: string | null = null;
   private isAuthenticated = false;
+  private tokenTimer: any;
 
   private authStatusListener = new Subject<boolean>();
 
@@ -44,6 +45,10 @@ export class AuthService {
         const token = response.token;
         this.token = token;
         if (token) {
+          const expiresInDuration = response.expiresIn;
+          setTimeout(() => {
+            this.logout();
+          }, expiresInDuration * 1000);
           this.authStatusListener.next(true);
           this.isAuthenticated = true;
           this.router.navigate(['/']);
@@ -57,5 +62,6 @@ export class AuthService {
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
     this.router.navigate(['/']);
+    clearTimeout(this.tokenTimer);
   }
 }
