@@ -7,6 +7,8 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class logincomponent {
+  // isLoading = false;
+
   constructor(public authService: AuthService) {}
 
   onLogin(form: NgForm) {

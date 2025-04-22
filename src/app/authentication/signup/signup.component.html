@@ -1,6 +1,5 @@
 <div class="container">
   <mat-card>
-    <mat-spinner [diameter]="40"></mat-spinner>
     <form (submit)="onSignup(signupform)" #signupform="ngForm">
       <div class="sub-container">
         <mat-form-field>
@@ -36,6 +35,7 @@
         </mat-form-field>
       </div>
       <button mat-raised-button color="warn" type="submit">Signup</button>
+      <!-- <mat-spinner [diameter]="40"></mat-spinner> -->
     </form>
   </mat-card>
 </div>

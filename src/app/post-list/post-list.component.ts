@@ -68,7 +68,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.posts = postData.posts;
       },
       error: () => {
-        this.Loading = false; // Reset Loading if an error occurs
+        this.Loading = false;
       },
     });
   }
@@ -86,18 +86,18 @@ export class PostListComponent implements OnInit, OnDestroy {
               this.posts = postData.posts;
             },
             error: () => {
-              this.Loading = false; // Reset Loading if an error occurs
+              this.Loading = false;
             },
           });
       },
       error: () => {
-        this.Loading = false; // Reset Loading if delete fails
+        this.Loading = false;
       },
     });
   }
 
   ngOnDestroy() {
-    this.postsSub.unsubscribe();
-    this.authStatusSub.unsubscribe();
+    this.postsSub?.unsubscribe();
+    this.authStatusSub?.unsubscribe();
   }
 }
