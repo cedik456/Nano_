@@ -42,3 +42,8 @@ mat-form-field {
   flex-direction: column;
   gap: 5px;
 }
+
+.login-title {
+  font-weight: 300;
+  font-size: 1rem;
+}
