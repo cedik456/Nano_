@@ -41,8 +41,10 @@ router.post(
     const url = req.protocol + "://" + req.get("host");
     const { title, content } = req.body;
     const imagePath = url + "/images/" + req.file.filename;
+    const creator = req.userData.userId;
+
     try {
-      const post = await Post.create({ title, content, imagePath });
+      const post = await Post.create({ title, content, imagePath, creator });
       res.status(200).json({
         message: "Post added successfully",
         post: {
