@@ -5,13 +5,18 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../authentication/auth.service'; // adjust path if needed
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<{ posts: Post[]; postCount: number }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   getPosts(
     pagesize: number,
@@ -50,6 +55,7 @@ export class PostsService {
       title: string;
       content: string;
       imagePath: string;
+      creator: string;
     }>('http://localhost:3000/api/posts/' + id);
   }
 
@@ -58,6 +64,7 @@ export class PostsService {
     postData.append('title', title);
     postData.append('content', content);
     postData.append('image', image);
+    postData.append('creator', this.authService.getUserId() || '');
 
     this.http
       .post<{ message: string; post: Post }>(
@@ -71,6 +78,7 @@ export class PostsService {
             title: title,
             content: content,
             imagePath: responseData.post.imagePath,
+            creator: this.authService.getUserId() || '',
           };
           this.posts.push(newPost);
           this.postsUpdated.next({
@@ -87,6 +95,7 @@ export class PostsService {
 
   updatePost(id: string, title: string, content: string, image: File | string) {
     let postData: FormData | Post;
+    const creator = this.authService.getUserId() || '';
 
     if (typeof image === 'object') {
       // If the image is a File, create a FormData object
@@ -102,6 +111,7 @@ export class PostsService {
         title: title,
         content: content,
         imagePath: image, // Keep the existing imagePath
+        creator: creator,
       };
     }
 
