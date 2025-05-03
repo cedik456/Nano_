@@ -41,8 +41,10 @@ router.post(
     const url = req.protocol + "://" + req.get("host");
     const { title, content } = req.body;
     const imagePath = url + "/images/" + req.file.filename;
+    const creator = req.userData.userId;
+
     try {
-      const post = await Post.create({ title, content, imagePath });
+      const post = await Post.create({ title, content, imagePath, creator });
       res.status(200).json({
         message: "Post added successfully",
         post: {
@@ -94,11 +96,17 @@ router.get("/:id", (req, res, next) => {
 });
 
 router.delete("/:id", checkAuth, (req, res) => {
-  Post.deleteOne({ _id: req.params.id }).then((result) => {
-    console.log(result);
-    console.log(req.params.id);
-    res.status(200).json({ message: "Post deleted" });
-  });
+  Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+    .then((result) => {
+      if (result.deletedCount > 0) {
+        res.status(200).json({ message: "Delete successful!" });
+      } else {
+        res.status(401).json({ message: "Not Authorized!" });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Deleting post failed!" });
+    });
 });
 
 // app.use((req, res) => {
@@ -113,23 +121,32 @@ router.put(
     const { id } = req.params;
     const { title, content } = req.body;
 
-    let imagePath = req.body.imagePath; // Default to the existing imagePath
+    let imagePath = req.body.imagePath;
     if (req.file) {
       const url = req.protocol + "://" + req.get("host");
-      imagePath = url + "/images/" + req.file.filename; // Update with the new image path
+      imagePath = url + "/images/" + req.file.filename;
     }
+
+    const updatedPost = {
+      title,
+      content,
+      imagePath,
+      creator: req.userData.userId, // ✅ Important to secure update!
+    };
 
     try {
       const result = await Post.updateOne(
-        { _id: id },
-        { title, content, imagePath }
+        { _id: id, creator: req.userData.userId }, // ✅ Match post + creator
+        updatedPost
       );
-      if (result.modifiedCount > 0) {
+
+      if (result.matchedCount > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {
-        res.status(404).json({ message: "Post not found!" });
+        res.status(401).json({ message: "Not Authorized!" });
       }
     } catch (error) {
+      console.error("Update Error:", error);
       res.status(500).json({ message: "Could not update post!" });
     }
   }
