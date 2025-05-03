@@ -54,6 +54,9 @@ router.post(
       });
     } catch (error) {
       console.log(error);
+      res.status(500).json({
+        message: "Creating A Post Failed!",
+      });
     }
   }
 );
@@ -86,13 +89,19 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res, next) => {
-  Post.findById(req.params.id).then((post) => {
-    if (post) {
-      res.status(200).json(post);
-    } else {
-      res.status(484).json({ message: "Post not Found!" });
-    }
-  });
+  try {
+    Post.findById(req.params.id).then((post) => {
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(484).json({ message: "Post not Found!" });
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fecching Posts Failed!",
+    });
+  }
 });
 
 router.delete("/:id", checkAuth, (req, res) => {

@@ -1,0 +1,6 @@
+.full-width-btn {
+  display: block; /* so width:100% expands to the container */
+  width: 100%; /* fill the full width of the mat-dialog-actions div */
+  background-color: #3e4bb4;
+  color: white;
+}
