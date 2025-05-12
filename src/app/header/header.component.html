@@ -3,7 +3,11 @@
     <a routerLink="/"> Message </a>
   </span>
   <span class="spacer"></span>
-  <ul>
+  <ul class="links">
+    <li class="email" *ngIf="userIsAuthenticated">
+      <span>{{ email }}</span>
+      <div class="profile-circle"></div>
+    </li>
     <li *ngIf="userIsAuthenticated">
       <a mat-button routerLink="/create" routerLinkActive="custom-red"
         >New Post</a

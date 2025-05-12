@@ -10,14 +10,17 @@ import { Subscription } from 'rxjs';
 export class AppHeaderComponent implements OnInit, OnDestroy {
   private authListenerSubs!: Subscription;
   public userIsAuthenticated = false;
+  email: string | null = null;
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
+    this.email = this.authService.getEmail();
     this.authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.email = this.authService.getEmail();
       });
   }
 
