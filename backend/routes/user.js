@@ -27,7 +27,7 @@ router.post("/login", (req, res) => {
       .then((result) => {
         if (!result) {
           return res.status(401).json({
-            message: "Auth Failed",
+            message: "Invalid Credentials",
           });
         }
         const token = jwt.sign(
@@ -40,6 +40,7 @@ router.post("/login", (req, res) => {
           token: token,
           expiresIn: 3600,
           userId: fetchedUser._id,
+          email: fetchedUser.email,
         });
       })
       .catch((err) => {
@@ -54,19 +55,26 @@ router.post("/signup", (req, res) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
-      const NewUser = User({
+      const newUser = new User({
         email: req.body.email,
         password: hash,
       });
-      NewUser.save().then((result) => {
-        res.status(201).json({
-          message: "User created",
-          result: result,
-        });
+      // return this promise so its errors bubble to the next .catch()
+      return newUser.save();
+    })
+    .then((result) => {
+      res.status(201).json({
+        message: "User created",
+        result,
       });
     })
     .catch((err) => {
-      res.status(500).json({ error: err });
+      // Mongo duplicate-key error code
+      if (err.code === 11000 && err.keyPattern?.email) {
+        return res.status(409).json({ message: "Email already in use." });
+      }
+      console.error("Signup error:", err);
+      res.status(500).json({ message: "Invalid authentication credentials!" });
     });
 });
 

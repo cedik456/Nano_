@@ -22,6 +22,10 @@ import { logincomponent } from './authentication/login/login.component';
 import { signupcomponent } from './authentication/signup/signup.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './authentication/auth-interceptor';
+import { ErrorInterceptor } from './error-interceptor';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ErrorComponent } from './error/error.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +35,8 @@ import { AuthInterceptor } from './authentication/auth-interceptor';
     PostListComponent,
     logincomponent,
     signupcomponent,
+    ErrorComponent,
+    ProfileComponent,
   ],
   imports: [
     MatCardModule,
@@ -47,9 +53,11 @@ import { AuthInterceptor } from './authentication/auth-interceptor';
     HttpClientModule,
     ReactiveFormsModule,
     MatPaginatorModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
