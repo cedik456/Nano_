@@ -1,4 +1,24 @@
-# AngularProject
+# Angular Capstone Project
+
+## ✅ Added Features (Custom Functionalities)
+
+- 🌙 **Dark Mode Toggle**  
+  Added a toggle switch in the header that lets users switch between light and dark themes.
+
+- 📧 **Logged-in User Email Display**  
+  The authenticated user’s email is shown in the header after login to indicate active session.
+
+- 👤 **Simple User Profile**  
+  Basic user profile page showing static information and simulating future user settings.
+
+- 🔍 **Search Filter**  
+  Real-time search bar that filters posts based on keywords (implemented with a shared service).
+
+- 🖼️ **Simple & Clean UI**  
+  The layout uses Angular Material and a minimal design to ensure clarity and usability.
+
+## ℹ️ Note:
+Mobile responsiveness is not yet implemented.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
 
