@@ -1,4 +1,4 @@
-# Angular Capstone Project
+# Angular Project
 
 ## ✅ Added Features (Custom Functionalities)
 
