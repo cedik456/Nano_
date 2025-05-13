@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthData } from './auth-data.model';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserService } from '../shared/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -30,7 +31,11 @@ export class AuthService {
     return this.userId;
   }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
@@ -78,7 +83,13 @@ export class AuthService {
           this.isAuthenticated = true;
           this.userId = response.userId;
           this.email = response.email;
+
           this.authStatusListener.next(true);
+          // Pass the email to the UserService
+          this.userService.setUserData(email, password);
+          this.userService.setUserData(email, password);
+
+          console.log('Login successful:', email, password);
           this.router.navigate(['/']);
 
           console.log('Token received:', this.token);

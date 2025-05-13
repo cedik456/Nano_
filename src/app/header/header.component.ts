@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../authentication/auth.service';
 import { Subscription } from 'rxjs';
 import { SearchService } from '../shared/search.service';
+import { UserService } from '../shared/user.service'; // Import UserService
 
 @Component({
   selector: 'app-header',
@@ -12,9 +13,12 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   private authListenerSubs!: Subscription;
   public userIsAuthenticated = false;
   email: string | null = null;
+  isDarkMode = false;
+
   constructor(
     private authService: AuthService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private userService: UserService // Inject UserService
   ) {}
 
   ngOnInit() {
@@ -26,6 +30,9 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
         this.userIsAuthenticated = isAuthenticated;
         this.email = this.authService.getEmail();
       });
+
+    const darkModeState = localStorage.getItem('isDarkMode');
+    this.isDarkMode = darkModeState === 'true';
   }
 
   ngOnDestroy() {
@@ -37,6 +44,15 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
 
   onSearch(term: string) {
-    this.searchService.setSearchTerm(term); // Emit the search term
+    this.searchService.setSearchTerm(term);
+  }
+
+  onEmailClick() {
+    this.userService.setUserData(this.email || '', '');
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('isDarkMode', this.isDarkMode.toString());
   }
 }

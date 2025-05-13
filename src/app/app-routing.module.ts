@@ -5,6 +5,7 @@ import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { logincomponent } from './authentication/login/login.component';
 import { signupcomponent } from './authentication/signup/signup.component';
 import { AuthGuard } from './authentication/auth.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: PostListComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
     component: PostCreateComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'profile', component: ProfileComponent },
   { path: 'login', component: logincomponent },
   { path: 'signup', component: signupcomponent },
 ];

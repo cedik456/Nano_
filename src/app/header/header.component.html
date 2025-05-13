@@ -1,4 +1,4 @@
-<mat-toolbar class="toolbar">
+<mat-toolbar class="toolbar" [ngClass]="{ 'dark-mode': isDarkMode }">
   <span>
     <a routerLink="/"> Message </a>
   </span>
@@ -12,13 +12,20 @@
       placeholder="Search"
     />
   </div>
+  <li>
+    <button mat-button (click)="toggleDarkMode()">
+      {{ isDarkMode ? "Light Mode" : "Dark Mode" }}
+    </button>
+  </li>
 
   <!-- <span class="spacer"></span> -->
   <ul class="links">
-    <li class="email" *ngIf="userIsAuthenticated">
-      <span>{{ email }}</span>
-      <div class="profile-circle"></div>
-    </li>
+    <a routerLink="/profile">
+      <li class="email" *ngIf="userIsAuthenticated">
+        <span>{{ email }}</span>
+        <div class="profile-circle"></div>
+      </li>
+    </a>
     <li *ngIf="userIsAuthenticated">
       <a mat-button routerLink="/create" routerLinkActive="custom-red"
         >New Post</a

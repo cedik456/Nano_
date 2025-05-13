@@ -25,6 +25,7 @@ import { AuthInterceptor } from './authentication/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ErrorComponent } from './error/error.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ErrorComponent } from './error/error.component';
     logincomponent,
     signupcomponent,
     ErrorComponent,
+    ProfileComponent,
   ],
   imports: [
     MatCardModule,
