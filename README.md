@@ -1,4 +1,4 @@
-## ✅ Added Features (Custom Functionalities)
+## ✅ Added Features (Requirement Functionalities)
 
 - 🌙 **Dark Mode Toggle**  
   Users can switch between light and dark themes. Theme preference is saved in `localStorage`.
