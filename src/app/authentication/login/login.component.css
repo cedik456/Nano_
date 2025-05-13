@@ -1,27 +1,14 @@
-mat-form-field {
-  width: 100%;
-}
-
 form {
   display: flex;
-
   flex-direction: column;
 }
 
 mat-card {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   margin: auto;
-  width: auto;
+  width: 500px;
   padding: 28px;
   max-width: auto;
-}
-
-mat-card-content {
-  display: flex;
-  margin-bottom: 20px;
 }
 
 .wrapper {
@@ -34,9 +21,28 @@ mat-spinner {
 
 mat-form-field {
   background-color: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .login-title {
-  font-weight: 300;
-  font-size: 1rem;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+input {
+  border-radius: 4px;
+}
+
+.container {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.btn {
+  background-color: #303030;
+  color: white;
+  padding: 20px;
 }

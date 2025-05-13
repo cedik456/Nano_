@@ -1,8 +1,19 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="toolbar">
   <span>
     <a routerLink="/"> Message </a>
   </span>
-  <span class="spacer"></span>
+
+  <div class="search-bar">
+    <input
+      #searchInput
+      matInput
+      type="text"
+      (input)="onSearch(searchInput.value)"
+      placeholder="Search"
+    />
+  </div>
+
+  <!-- <span class="spacer"></span> -->
   <ul class="links">
     <li class="email" *ngIf="userIsAuthenticated">
       <span>{{ email }}</span>

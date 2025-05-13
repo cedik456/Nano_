@@ -1,41 +1,39 @@
 <div class="container">
   <mat-card>
     <form (submit)="onSignup(signupform)" #signupform="ngForm">
-      <div class="sub-container">
-        <h1 class="login-title">Signup Account</h1>
-        <mat-form-field>
-          <div class="wrapper">
-            <input
-              matInput
-              name="email"
-              ngModel
-              type="email"
-              placeholder="Email Id"
-              #emailInput="ngModel"
-              required
-              email
-            />
-          </div>
-          <mat-error *ngIf="emailInput.invalid"
-            >Please enter a valid email Id</mat-error
-          >
-        </mat-form-field>
-        <mat-form-field>
+      <h1 class="login-title">Signup now!</h1>
+      <mat-form-field>
+        <div class="wrapper">
           <input
-            type="password"
-            ngModel
-            name="password"
             matInput
-            placeholder="Password"
-            #passwordInput="ngModel"
+            name="email"
+            ngModel
+            type="email"
+            placeholder="Email Id"
+            #emailInput="ngModel"
             required
+            email
           />
-          <mat-error *ngIf="passwordInput.invalid"
-            >Please enter a valid password</mat-error
-          >
-        </mat-form-field>
-      </div>
-      <button mat-raised-button color="warn" type="submit">Signup</button>
+        </div>
+        <mat-error *ngIf="emailInput.invalid"
+          >Please enter a valid email Id</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          type="password"
+          ngModel
+          name="password"
+          matInput
+          placeholder="Password"
+          #passwordInput="ngModel"
+          required
+        />
+        <mat-error *ngIf="passwordInput.invalid"
+          >Please enter a valid password</mat-error
+        >
+      </mat-form-field>
+      <button mat-raised-button class="btn" type="submit">Signup</button>
       <!-- <mat-spinner [diameter]="40"></mat-spinner> -->
     </form>
   </mat-card>

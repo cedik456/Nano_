@@ -4,6 +4,7 @@ import { Post } from '../posts/post.model';
 import { PostsService } from '../posts/posts.service';
 import { PageEvent } from '@angular/material/paginator';
 import { AuthService } from '../authentication/auth.service';
+import { SearchService } from '../shared/search.service'; // Import SearchService
 
 @Component({
   selector: 'post-list',
@@ -12,15 +13,18 @@ import { AuthService } from '../authentication/auth.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
+  filteredPosts: Post[] = [];
   private postsSub!: Subscription;
   private authStatusSub!: Subscription;
+  private searchSub!: Subscription; // Add a subscription for the search term
   userId: string = '';
 
   public userIsAuthenticated = false;
 
   constructor(
     public postsService: PostsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private searchService: SearchService // Inject SearchService
   ) {}
 
   public totalposts = 0;
@@ -37,6 +41,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.Loading = false;
         this.totalposts = postData.postCount;
         this.posts = postData.posts;
+        this.filteredPosts = [...this.posts];
       },
       error: () => {
         this.Loading = false; // Reset Loading if an error occurs
@@ -48,7 +53,15 @@ export class PostListComponent implements OnInit, OnDestroy {
       next: (postData: { posts: Post[]; postCount: number }) => {
         this.posts = postData.posts;
         this.totalposts = postData.postCount;
+        this.filteredPosts = [...this.posts];
       },
+    });
+
+    // Subscribe to search term changes
+    this.searchSub = this.searchService.searchTerm$.subscribe((term) => {
+      this.filteredPosts = this.posts.filter((post) =>
+        post.title.toLowerCase().includes(term.toLowerCase())
+      );
     });
 
     this.userIsAuthenticated = this.authService.getIsAuth();
@@ -69,6 +82,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.Loading = false;
         this.totalposts = postData.postCount;
         this.posts = postData.posts;
+        this.filteredPosts = [...this.posts];
       },
       error: () => {
         this.Loading = false;
@@ -87,6 +101,7 @@ export class PostListComponent implements OnInit, OnDestroy {
               this.Loading = false;
               this.totalposts = postData.postCount;
               this.posts = postData.posts;
+              this.filteredPosts = [...this.posts];
             },
             error: () => {
               this.Loading = false;
@@ -102,5 +117,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.postsSub?.unsubscribe();
     this.authStatusSub?.unsubscribe();
+    this.searchSub?.unsubscribe(); // Unsubscribe from search term changes
   }
 }

@@ -1,5 +1,7 @@
 mat-toolbar {
-  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 a {
@@ -11,6 +13,7 @@ li {
   list-style: none;
   display: flex;
   align-items: center;
+  color: white;
 }
 
 .spacer {
@@ -30,6 +33,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  cursor: pointer;
 }
 
 .profile-circle {
@@ -40,4 +44,23 @@ ul {
   display: inline-block;
   margin-left: 10px; /* Space between circle and email */
   margin-right: 20px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+input {
+  background-color: #303030;
+  border-radius: 4px;
+  border: none;
+  padding: 12px;
+  width: 500px;
+  color: white;
+}
+
+.toolbar {
+  background-color: #171717;
 }

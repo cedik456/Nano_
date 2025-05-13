@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../authentication/auth.service';
 import { Subscription } from 'rxjs';
+import { SearchService } from '../shared/search.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,10 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   private authListenerSubs!: Subscription;
   public userIsAuthenticated = false;
   email: string | null = null;
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private searchService: SearchService
+  ) {}
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
@@ -30,5 +34,9 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
+  }
+
+  onSearch(term: string) {
+    this.searchService.setSearchTerm(term); // Emit the search term
   }
 }
